@@ -1,21 +1,17 @@
-// App.js
 import React, { useState, useEffect } from "react";
 import TodoForm from "./components/todoForm";
 import TodoItem from "./components/todoItem";
 import TodoFilter from "./components/todoFilter";
-import "./App.css";
 
-function App() {
+const App = () => {
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState({ category: "All", status: "All" });
 
-  // Load todos from localStorage on initial render
   useEffect(() => {
     const storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
     setTodos(storedTodos);
   }, []);
 
-  // Save todos to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
@@ -52,7 +48,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>To-Do List Dashboard</h1>
+      <h1 className="text-[24px]">To-Do List Dashboard</h1>
       <TodoForm addTodo={addTodo} />
       <TodoFilter setFilter={setFilter} />
       <div className="todo-list">

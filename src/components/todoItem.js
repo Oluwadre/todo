@@ -1,7 +1,6 @@
-// components/TodoItem.jsx
 import React, { useState } from "react";
 
-function TodoItem({ todo, editTodo, deleteTodo, toggleComplete }) {
+const TodoItem =({ todo, editTodo, deleteTodo, toggleComplete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedText, setUpdatedText] = useState(todo.text);
 
@@ -17,6 +16,7 @@ function TodoItem({ todo, editTodo, deleteTodo, toggleComplete }) {
       {isEditing ? (
         <input
           type="text"
+          className="border border-gray rounded-[10px] p-3 focus:border-blue focus:outline-none focus:shadow-outline"
           value={updatedText}
           onChange={(e) => setUpdatedText(e.target.value)}
         />
@@ -25,11 +25,11 @@ function TodoItem({ todo, editTodo, deleteTodo, toggleComplete }) {
       )}
       <span>{todo.category}</span>
       <span>{todo.priority}</span>
-      <button onClick={() => toggleComplete(todo.id)}>
+      <button className="text-white bg-blue rounded-[10px] p-2" onClick={() => toggleComplete(todo.id)}>
         {todo.completed ? "Undo" : "Complete"}
       </button>
-      <button onClick={handleEdit}>{isEditing ? "Save" : "Edit"}</button>
-      <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+      <button className="text-white bg-blue rounded-[10px] p-2" onClick={handleEdit}>{isEditing ? "Save" : "Edit"}</button>
+      <button className="text-white bg-blue rounded-[10px] p-2" onClick={() => deleteTodo(todo.id)}>Delete</button>
     </div>
   );
 }
