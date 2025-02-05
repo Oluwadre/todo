@@ -2,19 +2,23 @@ import React, { useState, useEffect } from "react";
 import TodoForm from "./components/todoForm";
 import TodoItem from "./components/todoItem";
 import TodoFilter from "./components/todoFilter";
+import "./App.css";
 
 const App = () => {
-  const [todos, setTodos] = useState([]);
-  const [filter, setFilter] = useState({ category: "All", status: "All" });
+   const [todos, setTodos] = useState(() => {
+     const savedTodos = localStorage.getItem("todos");
+     return savedTodos ? JSON.parse(savedTodos) : [];
+   });
 
-  useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
-    setTodos(storedTodos);
-  }, []);
+  const [filter, setFilter] = useState({ category: "All", status: "All" });
+  const [search, setSearch] = useState("");
+
+
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
+
 
   const addTodo = (todo) => {
     setTodos([...todos, todo]);
@@ -43,14 +47,28 @@ const App = () => {
       filter.status === "All" ||
       (filter.status === "Completed" && todo.completed) ||
       (filter.status === "Incomplete" && !todo.completed);
-    return categoryMatch && statusMatch;
+    const searchMatch = todo.text.toLowerCase().includes(search.toLowerCase());
+    return categoryMatch && statusMatch && searchMatch;
   });
 
   return (
-    <div className="app">
-      <h1 className="text-[24px]">To-Do List Dashboard</h1>
-      <TodoForm addTodo={addTodo} />
-      <TodoFilter setFilter={setFilter} />
+    <div className="w-full max-w-[800px] m-auto p-[30px]">
+      <h1 className="font-bold text-3xl text-blue ">To-Do List Dashboard</h1>
+      <div className="w-full m-auto shadow-md rounded mt-10 p-6 md:w-full">
+        <TodoForm addTodo={addTodo} />
+        <div className="">
+          <TodoFilter setFilter={setFilter} />
+          <div className="mt-4">
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              className="border border-gray rounded-[10px] p-3 focus:border-blue focus:outline-none focus:shadow-outline"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
       <div className="todo-list">
         {filteredTodos.map((todo) => (
           <TodoItem
@@ -64,6 +82,6 @@ const App = () => {
       </div>
     </div>
   );
-}
+};
 
 export default App;
