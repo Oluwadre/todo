@@ -23,7 +23,7 @@ const TodoFilter = ({ setFilter }) => {
           name="status"
           onChange={handleFilterChange}
         >
-          <option value="All">All Statuses</option>
+          <option value="All">All Status</option>
           <option value="Completed">Completed</option>
           <option value="Incomplete">Incomplete</option>
         </select>
